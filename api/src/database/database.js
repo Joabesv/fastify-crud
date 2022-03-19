@@ -1,0 +1,27 @@
+import mongoose from 'mongoose';
+import 'dotenv/config';
+
+const connectDatabase = () => {
+  new Promise((resolve, reject) => {
+    mongoose.connection
+      // connection error
+      .on('error', error => {
+        console.log(`Failed to conect`);
+        reject(error);
+      })
+      // Connection timeOut
+      .on('close', () => {
+        console.log('ERROR: Connection to MongoDB lost');
+        process.exit(1);
+      })
+      .once('open', () => resolve());
+
+    console.log('config.MONGO_URI', process.env.MONGO_URI);
+
+    mongoose.connect(process.env.MONGO_URI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+  });
+};
+export default connectDatabase;
