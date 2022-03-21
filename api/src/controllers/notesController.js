@@ -44,7 +44,14 @@ function NotesController() {
     }
   }
   async function deleteNote(request, reply) {
-    console.log('deleteNote');
+    try {
+      const noteId = request.params.id;
+      const noteToDelete = await Note.findById(noteId);
+      await Note.findByIdAndDelete(noteId);
+      reply.code(200).send({ data: noteToDelete });
+    } catch (err) {
+      reply.code(500).send(err);
+    }
   }
 
   return {
