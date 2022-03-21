@@ -2,7 +2,16 @@ import Note from '../models/Note.js';
 
 function NotesController() {
   async function createNote(request, reply) {
-    console.log('createNote');
+    try {
+      // catching the data
+      const note = request.body;
+      // sending to the mongoose database
+      const newNote = await Note.create(note);
+      // no errors? send the status and continue
+      reply.code(201).send(newNote);
+    } catch (err) {
+      reply.code(500).send(err);
+    }
   }
   async function getNotes(request, reply) {
     console.log('getNotes');
