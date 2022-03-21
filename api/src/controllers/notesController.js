@@ -23,7 +23,13 @@ function NotesController() {
     }
   }
   async function getNote(request, reply) {
-    console.log('get note');
+    try {
+      const noteId = request.params.id;
+      const note = await Note.findById(noteId);
+      reply.code(200).send(note);
+    } catch (err) {
+      reply.code(404).send(err);
+    }
   }
   async function updateNote(request, reply) {
     console.log('updateNote');
