@@ -32,7 +32,16 @@ function NotesController() {
     }
   }
   async function updateNote(request, reply) {
-    console.log('updateNote');
+    // we need to take both id and the body
+    try {
+      const noteId = request.params.id;
+      const updates = request.body;
+      await Note.findByIdAndUpdate(noteId, updates);
+      const noteToUpdate = await Note.findById(noteId);
+      reply.code(200).send({ data: noteToUpdate });
+    } catch (err) {
+      reply.code(500).send(err);
+    }
   }
   async function deleteNote(request, reply) {
     console.log('deleteNote');
