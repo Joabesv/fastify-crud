@@ -14,10 +14,16 @@ function NotesController() {
     }
   }
   async function getNotes(request, reply) {
-    console.log('getNotes');
+    try {
+      // empty obj signalizing no params to the search
+      const notes = await Note.find({});
+      reply.code(200).send(notes);
+    } catch (err) {
+      reply.code(500).send(err);
+    }
   }
   async function getNote(request, reply) {
-    console.log('getNote');
+    console.log('get note');
   }
   async function updateNote(request, reply) {
     console.log('updateNote');
