@@ -2,7 +2,7 @@ import { NotesController } from '../controllers/notesController.js';
 
 const notesController = NotesController();
 
-export function noteRoutes(app) {
+export default function noteRoutes(app) {
   // create the note
   app.post('/api/notes', notesController.createNote);
 
