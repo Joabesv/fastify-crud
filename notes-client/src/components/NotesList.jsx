@@ -1,7 +1,7 @@
 import React from 'react';
 import {
   List,
-  DataGrid,
+  Datagrid,
   TextField,
   EditButton,
   DeleteButton,
@@ -10,12 +10,12 @@ import {
 export default function NotesList(props) {
   return (
     <List {...props}>
-      <DataGrid>
+      <Datagrid>
         <TextField source='id' />
         <TextField source='text' />
         <EditButton label='edit' basePath='/notes' />
         <DeleteButton label='delete' basePath='/notes' />
-      </DataGrid>
+      </Datagrid>
     </List>
   );
 }
