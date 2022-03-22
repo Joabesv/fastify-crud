@@ -8,27 +8,27 @@ function NotesController() {
       // sending to the mongoose database
       const newNote = await Note.create(note);
       // no errors? send the status and continue
-      reply.code(201).send(newNote);
+      return reply.code(201).send(newNote);
     } catch (err) {
-      reply.code(500).send(err);
+      return reply.code(500).send(err);
     }
   }
   async function getNotes(request, reply) {
     try {
       // empty obj signalizing no params to the search
       const notes = await Note.find({});
-      reply.code(200).send(notes);
+      return reply.code(200).send(notes);
     } catch (err) {
-      reply.code(500).send(err);
+      return reply.code(500).send(err);
     }
   }
   async function getNote(request, reply) {
     try {
       const noteId = request.params.id;
       const note = await Note.findById(noteId);
-      reply.code(200).send(note);
+      return reply.code(200).send(note);
     } catch (err) {
-      reply.code(404).send(err);
+      return reply.code(404).send(err);
     }
   }
   async function updateNote(request, reply) {
@@ -38,9 +38,9 @@ function NotesController() {
       const updates = request.body;
       await Note.findByIdAndUpdate(noteId, updates);
       const noteToUpdate = await Note.findById(noteId);
-      reply.code(200).send({ data: noteToUpdate });
+      return reply.code(200).send({ data: noteToUpdate });
     } catch (err) {
-      reply.code(500).send(err);
+      return reply.code(500).send(err);
     }
   }
   async function deleteNote(request, reply) {
@@ -48,9 +48,9 @@ function NotesController() {
       const noteId = request.params.id;
       const noteToDelete = await Note.findById(noteId);
       await Note.findByIdAndDelete(noteId);
-      reply.code(200).send({ data: noteToDelete });
+      return reply.code(200).send({ data: noteToDelete });
     } catch (err) {
-      reply.code(500).send(err);
+      return reply.code(500).send(err);
     }
   }
 
