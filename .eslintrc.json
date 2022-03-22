@@ -18,6 +18,9 @@
     "import/extensions": "off",
     "no-new": "off",
     "import/prefer-default-export": "off",
-    "no-unused-vars": "off"
+    "no-unused-vars": "off",
+    "import/no-extraneous-dependencies": ["error", { "devDependencies": true }],
+    "no-underscore-dangle": "off",
+    "no-shadow": "off"
   }
 }
