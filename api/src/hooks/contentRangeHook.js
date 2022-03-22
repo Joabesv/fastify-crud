@@ -1,6 +1,6 @@
 import Note from '../models/Note.js';
 
-export function contentRangeHook(request, reply, next) {
+export default function contentRangeHook(request, reply, next) {
   Note.count({}, (err, count) => {
     if (err) {
       console.log(`Error ${err}`);
