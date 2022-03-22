@@ -1,13 +1,11 @@
-// doc implementation of ReactAdmin Data Provider
-
 import { fetchUtils } from 'react-admin';
 import { stringify } from 'query-string';
 
-const apiUrl = 'http://localhost:3000/api';
+const apiUrl = 'http://localhost:5000/api';
 const httpClient = fetchUtils.fetchJson;
 
 export default {
-  getList: async (resource, params) => {
+  getList: (resource, params) => {
     const { page, perPage } = params.pagination;
     const { field, order } = params.sort;
     const query = {
@@ -17,29 +15,27 @@ export default {
     };
     const url = `${apiUrl}/${resource}?${stringify(query)}`;
 
-    const { headers, json } = await httpClient(url);
-    return {
+    return httpClient(url).then(({ headers, json }) => ({
       data: json.map(resource => ({ ...resource, id: resource._id })),
       total: parseInt(headers.get('content-range').split('/').pop(), 10),
-    };
+    }));
   },
   getOne: (resource, params) =>
     httpClient(`${apiUrl}/${resource}/${params.id}`).then(({ json }) => ({
       data: { ...json, id: json._id }, //!
     })),
 
-  getMany: async (resource, params) => {
+  getMany: (resource, params) => {
     const query = {
       filter: JSON.stringify({ id: params.ids }),
     };
     const url = `${apiUrl}/${resource}?${stringify(query)}`;
-    const { json } = await httpClient(url);
-    return {
+    return httpClient(url).then(({ json }) => ({
       data: json.map(resource => ({ ...resource, id: resource._id })),
-    };
+    }));
   },
 
-  getManyReference: async (resource, params) => {
+  getManyReference: (resource, params) => {
     const { page, perPage } = params.pagination;
     const { field, order } = params.sort;
     const query = {
@@ -52,11 +48,10 @@ export default {
     };
     const url = `${apiUrl}/${resource}?${stringify(query)}`;
 
-    const { headers, json } = await httpClient(url);
-    return {
+    return httpClient(url).then(({ headers, json }) => ({
       data: json.map(resource => ({ ...resource, id: resource._id })),
       total: parseInt(headers.get('content-range').split('/').pop(), 10),
-    };
+    }));
   },
 
   update: (resource, params) =>
@@ -65,18 +60,14 @@ export default {
       body: JSON.stringify(params.data),
     }).then(({ json }) => ({ ...json, id: json._id })),
 
-  updateMany: async (resource, params) => {
+  updateMany: (resource, params) => {
     const query = {
       filter: JSON.stringify({ id: params.ids }),
     };
-    const { json } = await httpClient(
-      `${apiUrl}/${resource}?${stringify(query)}`,
-      {
-        method: 'PUT',
-        body: JSON.stringify(params.data),
-      }
-    );
-    return { data: json };
+    return httpClient(`${apiUrl}/${resource}?${stringify(query)}`, {
+      method: 'PUT',
+      body: JSON.stringify(params.data),
+    }).then(({ json }) => ({ data: json }));
   },
 
   create: (resource, params) =>
@@ -96,17 +87,13 @@ export default {
       id: json._id,
     })),
 
-  deleteMany: async (resource, params) => {
+  deleteMany: (resource, params) => {
     const query = {
       filter: JSON.stringify({ id: params.ids }),
     };
-    const { json } = await httpClient(
-      `${apiUrl}/${resource}?${stringify(query)}`,
-      {
-        method: 'DELETE',
-        body: JSON.stringify(params.data),
-      }
-    );
-    return { data: json };
+    return httpClient(`${apiUrl}/${resource}?${stringify(query)}`, {
+      method: 'DELETE',
+      body: JSON.stringify(params.data),
+    }).then(({ json }) => ({ data: json }));
   },
 };
