@@ -8,12 +8,13 @@
     "format:write": "prettier --write .",
     "lint:check": "eslint .",
     "lint:fix": "eslint --fix .",
-    "start": "node api/src/index.js"
+    "start": "nodemon api/src/index.js"
   },
   "license": "MIT",
   "dependencies": {
     "dotenv": "^16.0.0",
     "fastify": "^3.27.4",
+    "fastify-cors": "^6.0.3",
     "mongoose": "^6.2.7"
   },
   "devDependencies": {
@@ -24,6 +25,7 @@
     "eslint-plugin-jsx-a11y": "^6.5.1",
     "eslint-plugin-react": "^7.28.0",
     "eslint-plugin-react-hooks": "^4.3.0",
+    "nodemon": "^2.0.15",
     "prettier": "^2.6.0"
   }
 }
